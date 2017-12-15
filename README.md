@@ -45,15 +45,22 @@ First we grep for keyword Scanner and the first two hits are the function calls 
 
 ![alt text](screenshot/7.png)
 
-We now know (after a bit of testing) that the padding needed to reach the first input paramter is 104. You can see this in action here (we use python to generate 104 A's and see the memmove() now contains our payload deadbeef): 
+Using that information we can set a break point at the first printf function and learn (with the help of some testing) that the padding needed to reach the first input paramter is 104. You can see this in action here (we use python to generate 104 A's and see the memmove() now contains our payload deadbeef): 
+
+*Note: Look at the next step if you need help with setting breakpoints and analyzing the stack*
 
 ![alt text](screenshot/8.png)
 
-Now let's use those function addresses to set break points and analyze the registers at those breakpoints (getting excited yet?). Let's set a breakpoint at the second input function and analyze the stack:
+Now let's also use those function addresses to set break points and analyze the registers at those breakpoints. Let's set a breakpoint at the second input function and analyze the stack:
 
 ![alt text](screenshot/9.png)
 
-We can use one of the addresses after the x/10x $sp command as our return point of execution (for example I use - 0xc82003bd60) and begin writing our exploit. To do that we use the pwntools library and use all the information we gathered thus far: 
+We can use one of the addresses after the x/10x $sp command as our return point of execution (for example I use - 0xc82003bd60) to begin writing our exploit. To do that we use the pwntools library and use all the information we gathered thus far: 
 
+![alt text](screenshot/10.png)
 
+When we run it we get: 
 
+![alt text](screenshot/10.png)
+
+As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we have to calculate the amount of padding to the next printf function and do the same thing once again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one). 
