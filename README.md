@@ -13,5 +13,6 @@ Tools used in this demo:
   * GDB - Debugger
   * objdump - Binary Utility 
 
-Before we get started make sure you download the CTF file [baby_stack]()
+Before we get started make sure you download the CTF file [baby_stack](baby_stack-7b078c99bb96de6e5efc2b3da485a9ae8a66fd702b7139baf072ec32175076d8.dms) and make it executable
+
 The first thing I always do when I'm testing a CTF file is run it and see what it does.
