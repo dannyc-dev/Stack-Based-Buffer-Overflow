@@ -34,7 +34,7 @@ Nothing too exciting. It looks like it's just taking in two inputs and simply re
 
 ![alt text](screenshot/5.png)
 
-You can see we have a go routine (GO executable) and were able to overflow the buffer but if you read the stack trace we see we get a segmentation fault but we aren't getting it because we are successfully replacing the return address (0xc841414141). It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. 
+You can see we have a go routine (GO executable) and we're able to overflow the buffer but if you read the stack trace we see we get a segmentation fault but we aren't getting it because we are successfully replacing the return address (0xc841414141). It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. 
 
 At this point we want to dissasemble the executable and see if we can find the scanner bufio function calls (where the program asks for user input) and better understand the flow of execution. This is where most commercial dissasmblers come in handy to be able to quickly find these points of input but we're going to use objdump with the -S (source) flag and combine it with grep to find the things we need. This is how it should look (note this took me a few trial and error searches but in the end, did just as well as IDAPro in my opinion): 
 
