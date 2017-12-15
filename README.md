@@ -21,7 +21,7 @@ The first thing I always do when I'm testing a file is see what kind of file it 
 
 ![alt text](screenshot/2.png)
 
-So now we know it's a statically linked 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
+So now we know it's a statically linked (we can't jump into libc since they are embedded in the binary) 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
 
 ![alt text](screenshot/4.png) ![alt text](screenshot/3.png)
 
@@ -35,4 +35,8 @@ Nothing too exciting. It looks like it's just taking in two inputs and simply re
 
 ![alt text](screenshot/5.png)
 
-So you can see we were able to overflow the buffer but if you read the stack trace (unexpected fault address: 0xc841414141) we got a segmentation fault but we aren't getting it because we are replacing the ret address. It's because we are changing the parameters 
+So you can see we were able to overflow the buffer but if you read the stack trace we get a segmentation fault but we aren't getting it because we are replacing the return address. It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. Another important thing to note here is that we have a go routine (GO executable). 
+
+At this point we want to dissasemble the executable and see if we can find the scanner bufio function calls (where the program asks for user input). This is where most commercial dissasmblers come in handy to be able to quickly find these points of input but we're going to use objdump with the -S (source) flag and combine it with grep to find the things we need. This is how it should look: 
+
+
