@@ -35,9 +35,9 @@ Nothing too exciting. It looks like it's just taking in two inputs and simply re
 
 ![alt text](screenshot/5.png)
 
-So you can see we were able to overflow the buffer and if you read the stack trace we get a segmentation fault but we aren't getting it because we are replacing the return address. It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. Another important thing to note here is that we have a go routine (GO executable). 
+So you can see we have a go routine (GO executable) and were able to overflow the buffer but if you read the stack trace we see we get a segmentation fault but we aren't getting it because we are successfully replacing the return address. It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. 
 
-At this point we want to dissasemble the executable and see if we can find the scanner bufio function calls (where the program asks for user input). This is where most commercial dissasmblers come in handy to be able to quickly find these points of input but we're going to use objdump with the -S (source) flag and combine it with grep to find the things we need. This is how it should look (note this took me a few trial and error searches but in the end did just as well as IDAPro): 
+At this point we want to dissasemble the executable and see if we can find the scanner bufio function calls (where the program asks for user input) and better understand the flow of execution. This is where most commercial dissasmblers come in handy to be able to quickly find these points of input but we're going to use objdump with the -S (source) flag and combine it with grep to find the things we need. This is how it should look (note this took me a few trial and error searches but in the end did just as well as IDAPro in my opinion): 
 
 ![alt text](screenshot/6.png)
 
@@ -45,10 +45,15 @@ First we grep for keyword Scanner and the first two hits are the function calls 
 
 ![alt text](screenshot/7.png)
 
-We now know (after a bit of confirmation testing) that the padding needed to reach the first input paramter is 104. You can see this in action here (we use python to generate 104 A's and see the memmove() now contains our payload deadbeef): 
+We now know (after a bit of testing) that the padding needed to reach the first input paramter is 104. You can see this in action here (we use python to generate 104 A's and see the memmove() now contains our payload deadbeef): 
 
 ![alt text](screenshot/8.png)
 
-Now let's use those function addresses to set break points and analyze the registers at those breakpoints (getting excited yet?)
+Now let's use those function addresses to set break points and analyze the registers at those breakpoints (getting excited yet?). Let's set a breakpoint at the second input function and analyze the stack:
+
+![alt text](screenshot/9.png)
+
+We can use one of the addresses after the x/10x $sp command as our return point of execution (for example I use - 0xc82003bd60) and begin writing our exploit. To do that we use the pwntools library and use all the information we gathered thus far: 
+
 
 
