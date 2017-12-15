@@ -21,11 +21,11 @@ The first thing I always do when I'm testing a file is see what kind of file it 
 
 ![alt text](screenshot/2.png)
 
-So now we know it's a statically linked (we can't jump into libc since they are embedded in the binary) 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
+So now we know it's a statically linked (meaning we can't jump into libc since they are embedded in the binary) 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
 
 ![alt text](screenshot/4.png) ![alt text](screenshot/3.png)
 
-Now we have the entry address (from readelf) which could come in handy in the future. And more importantly we know that stack canary is disabled (yay!) and NX is enabled which stands for non-executable segment. It means that the application, when loaded in memory, does not allow any of its segments to be both writable and executable (hence why we need ROP in Part 2, we will come back to this later).
+Now we have the entry address (from readelf) which could come in handy in the future. And more importantly we know that stack canary is disabled (yay!) and NX is enabled which stands for non-executable segment. It means that the application, when loaded in memory, does not allow any of it's segments to be both writable and executable (hence why we need ROP in Part 2, we will come back to this later).
 
 Next let's try running it and see what it actually does:
 
@@ -35,7 +35,7 @@ Nothing too exciting. It looks like it's just taking in two inputs and simply re
 
 ![alt text](screenshot/5.png)
 
-So you can see we have a go routine (GO executable) and were able to overflow the buffer but if you read the stack trace we see we get a segmentation fault but we aren't getting it because we are successfully replacing the return address. It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. 
+So you can see we have a go routine (GO executable) and were able to overflow the buffer but if you read the stack trace we see we get a segmentation fault but we aren't getting it because we are successfully replacing the return address (0xc841414141). It's actually because we are changing the parameters of the memmove() function which changes the paramters for the print function. 
 
 At this point we want to dissasemble the executable and see if we can find the scanner bufio function calls (where the program asks for user input) and better understand the flow of execution. This is where most commercial dissasmblers come in handy to be able to quickly find these points of input but we're going to use objdump with the -S (source) flag and combine it with grep to find the things we need. This is how it should look (note this took me a few trial and error searches but in the end did just as well as IDAPro in my opinion): 
 
@@ -47,15 +47,15 @@ First we grep for keyword Scanner and the first two hits are the function calls 
 
 Using that information we can set a break point at the first printf function and learn (with the help of some testing) that the padding needed to reach the first input paramter is 104. You can see this in action here (we use python to generate 104 A's and see the memmove() now contains our payload deadbeef): 
 
-*Note: Look at the next step if you need help with setting breakpoints and analyzing the stack*
+*Note: Look at the next step if you need help with setting breakpoints and analyzing the stack because you will need to do it to find the other padding*
 
 ![alt text](screenshot/8.png)
 
-Now let's also use those function addresses to set break points and analyze the registers at those breakpoints. Let's set a breakpoint at the second input function and analyze the stack:
+Now let's also use those function addresses to set break points and analyze the registers and stack at those breakpoints. Let's set a breakpoint at the second input function and analyze the stack:
 
 ![alt text](screenshot/9.png)
 
-We can use one of the addresses after the x/10x $sp command as our return point of execution (for example I use - 0xc82003bd60) to begin writing our exploit. To do that we use the pwntools library and use all the information we gathered thus far: 
+We can use one of the addresses after the x/10x $sp command as our return point of execution (for example I use - 0xc82003bd60) and begin writing our exploit. To do that we use the pwntools library as well as all the useful information we gathered thus far: 
 
 ![alt text](screenshot/10.png)
 
@@ -63,4 +63,6 @@ When we run it we get:
 
 ![alt text](screenshot/10.png)
 
-As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we have to calculate the amount of padding to the next printf function and do the same thing once again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one). 
+As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we still have to calculate the amount of padding to the next printf function and do the same thing again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one).
+
+
