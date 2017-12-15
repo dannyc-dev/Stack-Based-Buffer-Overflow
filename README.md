@@ -21,7 +21,7 @@ The first thing I always do when I'm testing a file is see what kind of file it 
 
 ![alt text](screenshot/2.png)
 
-So now we know it's a statically linked (meaning we can't jump into libc since they are embedded in the binary) 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
+So now we know it's a statically linked (meaning we can't jump into libc since they are embedded in the binary). It's a 64-bit ELF executable and we can run the readelf command and the checksec command (if you get an error be sure to install the pwntools library above) to gain even more insight on the file. The output was:
 
 ![alt text](screenshot/4.png) ![alt text](screenshot/3.png)
 
