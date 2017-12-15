@@ -61,7 +61,7 @@ We can use one of the addresses after the x/10x $sp command as our return point 
 
 When we run it we get: 
 
-![alt text](screenshot/10.png)
+![alt text](screenshot/11.png)
 
 As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we still have to calculate the amount of padding to the next printf function and do the same thing again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one).
 
