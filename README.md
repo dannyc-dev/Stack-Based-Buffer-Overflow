@@ -9,7 +9,7 @@ There have been several really good write-ups on this challenge already (specifi
 
 Tools used in this demo: 
   *Linux Ubuntu VM (this really doesn't matter, pick an OS you're comfortable in)
-  *pwntools (https://github.com/Gallopsled/pwntools.git) - Really useful python library for exploit dev 
+  *[pwntools](https://github.com/Gallopsled/pwntools.git) - Really useful python library for exploit dev 
   *GDB - Debugger
   *objdump - Binary Utility 
 
