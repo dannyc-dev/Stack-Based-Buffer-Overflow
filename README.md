@@ -8,9 +8,9 @@ I wanted to make a quick and easy educational guide to exploiting x64 ELF execut
 There have been several really good write-ups on this challenge already (specifically TeamRocketIST) but most of them required some sort of commercial software that students, like myself don't usually have the funds for. So lets get started!
 
 Tools used in this demo: 
-..*Linux Ubuntu VM (this really doesn't matter, pick an OS you're comfortable in)
-..*pwntools (https://github.com/Gallopsled/pwntools.git) - Really useful python library for exploit dev 
-..*GDB - Debugger
-..*objdump - Binary Utility 
+  *Linux Ubuntu VM (this really doesn't matter, pick an OS you're comfortable in)
+  *pwntools (https://github.com/Gallopsled/pwntools.git) - Really useful python library for exploit dev 
+  *GDB - Debugger
+  *objdump - Binary Utility 
 
 
