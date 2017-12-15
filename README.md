@@ -60,7 +60,7 @@ When we run it we get:
 
 ![alt text](screenshot/11.png)
 
-As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we still have to calculate the amount of padding to the next printf function and do the same thing again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one).
+As you can see this is a similar result to when we overflow the memmove() function and change the print function parameters. This is because we still have to calculate the amount of padding to the next printf function and do the same thing again to be able to overwrite the return instruction (I used the same technique to calculate the second and third padding values as we did with the first one above).
 
 We can see here that if we change our 'AAAAAAAA' payload with p64(0x8), our return message now prints out 8 bytes without seg faulting (are you getting excited yet?): 
 
@@ -68,7 +68,7 @@ We can see here that if we change our 'AAAAAAAA' payload with p64(0x8), our retu
 
 ![alt text](screenshot/13.png)
 
-Our last step to control execution is to add in the padding for the second print function and the padding for the return address and we should have full execution control. Let's see what our final exploit looks like:
+Our last step to control execution is to add in the padding for the second print function and the padding for the return instruction and we should have full execution control. Let's see what our final exploit looks like:
 
 ![alt text](screenshot/14.png)
 
