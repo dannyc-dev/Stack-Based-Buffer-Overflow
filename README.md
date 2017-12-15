@@ -25,7 +25,7 @@ So now we know it's a statically linked 64-bit ELF executable and we can run the
 
 ![alt text](screenshot/4.png) ![alt text](screenshot/3.png)
 
-Now we have the entry address (from readelf) which could come in handy in the future. And more importantly we know that NX is enabled which stands for non-executable segment. It means that the application, when loaded in memory, does not allow any of its segments to be both writable and executable (hence why we need ROP in Part 2, we will come back to this later).
+Now we have the entry address (from readelf) which could come in handy in the future. And more importantly we know that stack canary is disabled (yay!) and NX is enabled which stands for non-executable segment. It means that the application, when loaded in memory, does not allow any of its segments to be both writable and executable (hence why we need ROP in Part 2, we will come back to this later).
 
 Next let's try running it and see what it actually does:
 
@@ -33,6 +33,6 @@ Next let's try running it and see what it actually does:
 
 Nothing too exciting. It looks like it's just taking in two inputs and simply reformatting and printing them. So let's try inputting a longer buffer and see what happens. These were the results:
 
-![alt text](screenshot/2.png)
+![alt text](screenshot/5.png)
 
-
+So you can see we were able to overflow the buffer but if you read the stack trace (unexpected fault address: 0xc841414141) we got a segmentation fault but we aren't getting it because we are replacing the ret address. It's because we are changing the parameters 
