@@ -65,4 +65,20 @@ When we run it we get:
 
 As you can see this is a similar result to when we overflow the memcopy() function and change the print function parameters. This is because we still have to calculate the amount of padding to the next printf function and do the same thing again to be able to overwrite the return address (I used objdump and gdb to calculate the second and third padding values the same way we did with the first one).
 
+We can see here that if we change our 'AAAAAAAA' payload with p64(0x8), our return message now prints out 8 bytes without seg faulting (are you getting excited yet?): 
 
+![alt text](screenshot/12.png)
+
+![alt text](screenshot/13.png)
+
+Our last step to control execution is to add in the padding for the second print function and the padding for the return address and we should have full execution control. Let's see what our final exploit looks like:
+
+![alt text](screenshot/14.png)
+
+And when we run it we should see our return address now holds our payload: 
+
+![alt text](screenshot/15.png)
+
+Wohoo - as you can see our return address now holds 0xdeadbeef! We have successfully controlled the flow of execution for our program. In the next section we will build a ROP chain so that we can replace 0xdeadbeef and invoke our shell. This will complete our exploit and hopefully give us a shell. 
+
+Thanks for making it this far - see you at part 2!
