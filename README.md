@@ -1,4 +1,4 @@
-# Smashing the Stack
+# Smashing the Stack  [![HitCount](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow.svg)](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow)
 ## Stacked Based Buffer Over Flow Part 1
 ### By: Danny Colmenares 
 ### Twitter: @malware_sec
