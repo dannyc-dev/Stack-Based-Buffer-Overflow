@@ -1,4 +1,4 @@
-# Smashing the Stack  [![HitCount](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow.svg)](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow)
+# Smashing the Stack  [![HitCount](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow.svg)](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow) ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat) [![start with why](https://img.shields.io/badge/Follow%20Me-@MalwareSec-brightgreen.svg?style=flat)](https://twitter.com/malware_sec)
 ## Stacked Based Buffer Over Flow Part 1
 ### By: Danny Colmenares 
 ### Twitter: @malware_sec
