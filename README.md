@@ -1,7 +1,7 @@
-# Smashing the Stack  [![HitCount](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow.svg)](http://hits.dwyl.io/MalwareSec/Stack-Based-Buffer-Overflow) ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat) [![start with why](https://img.shields.io/badge/Follow%20Me-@MalwareSec-brightgreen.svg?style=flat)](https://twitter.com/malware_sec)
+# Smashing the Stack
 ## Stacked Based Buffer Over Flow Part 1
 ### By: Danny Colmenares 
-### Twitter: @malware_sec
+
 In [Part 2](https://malwaresec.github.io/Building-the-ROP-Chain/) we build the ROP chain to control execution and call our shell! 
 
 I wanted to make a relatively quick and easy educational guide to exploiting x64 ELF executables (**using free and open source tools**). Specifically, the process I go through when reversing and testing executables. I chose to use SECCON 2017 CTF's Baby Stack challenge because it incorporated a good buffer overflow example and provided the ability to chain ROP gadgets to complete the exploit. But this tutorial is really about the process and techniques used to achieve execution control, so hopefully you can recreate it in any environment.
